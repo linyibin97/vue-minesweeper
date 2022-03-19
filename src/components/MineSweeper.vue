@@ -1,29 +1,29 @@
 <template>
-  <div @contextmenu.prevent="">
-      <div 
-      v-for="row, x in martix"
-      :key="x"
-      class="row">
-            <div 
-            v-for="block, y in row"
-            :key="y+x"
-            @click = clickBlock(x,y)
-            @contextmenu.prevent = clickRightBlock(x,y)
-            :class="['block',block.revealed?'':'cover']">
-                <template v-if="block.revealed || devmode">
-                    <span v-if="block.mine">
-                        雷
+    <div class="minesweeper" @contextmenu.prevent="">
+        <div 
+        v-for="row, x in martix"
+        :key="x"
+        class="row">
+                <div 
+                v-for="block, y in row"
+                :key="y+x"
+                @click = clickBlock(x,y)
+                @contextmenu.prevent = clickRightBlock(x,y)
+                :class="['block',block.revealed?'':'cover']">
+                    <template v-if="block.revealed || devmode">
+                        <span v-if="block.mine">
+                            雷
+                        </span>
+                        <span v-else :style="'color:'+numColor[block.num]">
+                            {{block.num}}
+                        </span>
+                    </template>
+                    <span v-else-if="block.flagged">
+                        F
                     </span>
-                    <span v-else :style="'color:'+numColor[block.num]">
-                        {{block.num}}
-                    </span>
-                </template>
-                <span v-else-if="block.flagged">
-                    F
-                </span>
-            </div>
-      </div>
-  </div>
+                </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -31,6 +31,10 @@ const HEIGHT = 10 //矩阵高
 const WIDTH = 10  //矩阵宽
 const P_MINE = 0.1  //每个格子有地雷的概率
 const DIRECTIONS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
+let revealedBlockNum = 0
+let flagedBlockNum = 0
+let mineNum = 0
+
 function Block() {
     this.num = 0  //该格子周围有几个雷
     this.mine = false  //该格子是否为地雷
@@ -53,8 +57,8 @@ export default {
             numColor : ['transparent','darkblue','darkgreen','darkred','midnightblue','seagreen','crimson','purple','darkorange'],
             martix: Array.from(new Array(HEIGHT), 
                             ()=>new Array(WIDTH).fill({}).map(()=>new Block())),
-            devmode: false, //开发模式 可以预览
-            gameovered : false,
+            time : 0,
+            devmode: false, //开发模式 为TRUE可以预览格子内容 （透视挂）
         }
     },
     methods: {
@@ -63,6 +67,7 @@ export default {
                 for (let block of row) {
                     if (Math.random()<P_MINE) {
                         block.mine = true
+                        mineNum++
                     }
                 }
             }
@@ -82,6 +87,7 @@ export default {
             }
             if (block.flagged || block.revealed) return //跳过标记和已经打开的格子
             block.revealed = true
+            revealedBlockNum++ //计数
             if (block.num === 0) { //周围0个雷 需要拓展
                 walkAround(x, y, this.reveal)
             }
@@ -115,10 +121,13 @@ export default {
             let block = this.martix[x][y]
             if (block.revealed) return
             block.flagged = !block.flagged
+
+            if (block.flagged) flagedBlockNum++ 
+                else flagedBlockNum--
+
             this.judge()
         },
         gameOver() {
-            this.gameovered = true
             for (let i=0; i<HEIGHT; i++) {
                 for (let j=0; j<WIDTH; j++) {
                     if (this.martix[i][j].mine) {
@@ -126,44 +135,56 @@ export default {
                     }
                 }
             }
-            setTimeout(()=>{
-                alert('Game Over')
-                history.go(0)
-            },100)
+            this.lose()
         },
         // 判断是否不能再点击了
         judge() {  
-            let wrongflag = false
-            for (let i=0; i<HEIGHT; i++) {
-                for (let j=0; j<WIDTH; j++) {
-                    let block = this.martix[i][j]
-                    if (!block.revealed && !block.flagged) return
-                    if (block.flagged && !block.mine) wrongflag = true
-                }
-            }
-            if (wrongflag) {
-                setTimeout(()=>{
-                    alert('You Lose')
-                    history.go(0)
-                },100)
+            //let wrongflag = false
+            // for (let i=0; i<HEIGHT; i++) {
+            //     for (let j=0; j<WIDTH; j++) {
+            //         let block = this.martix[i][j]
+            //         if (!block.revealed && !block.flagged) return
+            //         if (block.flagged && !block.mine) wrongflag = true
+            //     }
+            // }
+            if (flagedBlockNum + revealedBlockNum < HEIGHT*WIDTH) return //还有可以点击的block
+            if (flagedBlockNum !== mineNum) {
+                this.lose()
             } else {
-                setTimeout(()=>{
-                    alert('You Win')
-                    history.go(0)
-                },100)
+                this.win()
             }
+        },
+        win() {
+            let endTime = Date.now()
+            setTimeout(()=>{
+                alert(`YOU WIN! ${((endTime-this.time)/1000).toFixed(2)}s`)
+                history.go(0)
+            },100)
+        },
+        lose() {
+            setTimeout(()=>{
+                alert('YOU LOSE')
+                history.go(0)
+            },100)
         }
     },
     created() {
         this.generateMine()
         this.countNum()
+    },
+    mounted() {
+        this.time = Date.now() //计时开始
     }
 }
 </script>
 
 <style>
+    .minesweeper {
+        margin-top: 50px;
+    }
     .row {
         display: flex;
+        justify-content: center;
     }
     .block {
         width: 40px;
