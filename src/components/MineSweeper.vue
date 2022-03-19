@@ -11,17 +11,17 @@
                 @mousedown = hightLight(x,y,true)
                 @mouseup = hightLight(x,y,false)
                 @contextmenu.prevent = clickRightBlock(x,y)
-                :class="['block',!block.revealed? (block.highlight?'hightlight':'cover') :'']">
+                :class="['block',!block.revealed? (block.highlight?'hightlight':'cover') : (block.mine?'mineblock':'')]">
                     <template v-if="block.revealed || devmode">
                         <span v-if="block.mine">
-                            雷
+                            <i class="iconfont bomb">&#xef43;</i>
                         </span>
                         <span v-else :style="'color:'+numColor[block.num]">
                             {{block.num}}
                         </span>
                     </template>
                     <span v-else-if="block.flagged">
-                        F
+                        <i class="iconfont flag">&#xe7ad;</i>
                     </span>
                 </div>
         </div>
@@ -190,7 +190,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .minesweeper {
         margin-top: 50px;
     }
@@ -209,6 +209,9 @@ export default {
         font-size: 18px;
         background-color: #eee;
     }
+    .mineblock {
+        background-color: indianred;
+    }
     .cover:hover {
         background-color: #ddd;
     }
@@ -218,4 +221,24 @@ export default {
     .hightlight {
         background-color: #ddd;
     }
+
+    .bomb {
+        color : #fff;
+    }
+    .flag {
+        color: indianred;
+    }
+
+    @font-face {
+        font-family: 'iconfont';
+        src: url('../assets/icon/iconfont.ttf?t=1647702211946') format('truetype');
+    }
+    .iconfont {
+        font-family: "iconfont" !important;
+        font-size: 16px;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
 </style>
