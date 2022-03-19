@@ -8,8 +8,10 @@
                 v-for="block, y in row"
                 :key="y+x"
                 @click = clickBlock(x,y)
+                @mousedown = hightLight(x,y,true)
+                @mouseup = hightLight(x,y,false)
                 @contextmenu.prevent = clickRightBlock(x,y)
-                :class="['block',block.revealed?'':'cover']">
+                :class="['block',!block.revealed? (block.highlight?'hightlight':'cover') :'']">
                     <template v-if="block.revealed || devmode">
                         <span v-if="block.mine">
                             雷
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-const HEIGHT = 10 //矩阵高
+const HEIGHT = 15 //矩阵高
 const WIDTH = 10  //矩阵宽
 const P_MINE = 0.1  //每个格子有地雷的概率
 const DIRECTIONS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
@@ -40,8 +42,10 @@ function Block() {
     this.mine = false  //该格子是否为地雷
     this.flagged = false  //是否被用户标记
     this.revealed = false  //是否被翻开
+    this.highlight = false //点击数字时高亮提示
 }
 
+//用于遍历(x,y)附近八个格子 callback接受两个参数：dx,dy
 function walkAround(x, y, callback) {
     for (let d of DIRECTIONS) {
         let dx = x+d[0]
@@ -127,6 +131,14 @@ export default {
 
             this.judge()
         },
+        hightLight(x, y, f) {
+            if (!this.martix[x][y].revealed) return
+            walkAround(x, y, (dx, dy)=>{
+                let block = this.martix[dx][dy]
+                if (!block.revealed && !block.flagged) 
+                    block.highlight = f
+            })
+        },
         gameOver() {
             for (let i=0; i<HEIGHT; i++) {
                 for (let j=0; j<WIDTH; j++) {
@@ -197,10 +209,13 @@ export default {
         font-size: 18px;
         background-color: #eee;
     }
-    .block:hover {
-        background-color: #eee;
+    .cover:hover {
+        background-color: #ddd;
     }
     .cover {
         background-color: #ccc;
+    }
+    .hightlight {
+        background-color: #ddd;
     }
 </style>
