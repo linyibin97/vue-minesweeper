@@ -16,14 +16,7 @@ Vue实现 经典小游戏扫雷
 - 鼠标左键点击已知格子可以高亮附近8个格子未被打开或标记的格子，若附近8个格子被标记数量与该格子显示的附近地雷数相等则自动打开未被打开的格子。
 
 ### 运行项目
-
-```
-git clone https://gitee.com/linyibin97/vue-minesweeper.git
-```
-
 ```
 yarn install
-```
-```
 yarn serve
 ```
