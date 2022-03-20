@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4936668",
+      "name": "eye-fill",
+      "font_class": "eye-fill",
+      "unicode": "e869",
+      "unicode_decimal": 59497
+    },
+    {
       "icon_id": "5633855",
       "name": "bomb",
       "font_class": "bomb",
@@ -18,6 +25,20 @@
       "font_class": "flag-fill",
       "unicode": "e7ad",
       "unicode_decimal": 59309
+    },
+    {
+      "icon_id": "8092166",
+      "name": "eye close-fill",
+      "font_class": "eyeclose-fill",
+      "unicode": "e8ff",
+      "unicode_decimal": 59647
+    },
+    {
+      "icon_id": "23185109",
+      "name": "gitee2",
+      "font_class": "gitee2",
+      "unicode": "e677",
+      "unicode_decimal": 58999
     }
   ]
 }
