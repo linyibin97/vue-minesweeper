@@ -63,7 +63,8 @@ let P_MINE = 10  //每个格子有地雷的概率
 let revealedBlockNum = 0
 let flagedBlockNum = 0
 let mineNum = 0
-let FirstClick = true
+let firstClick = true
+let timer = null
 const DIRECTIONS = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
 
 function Block() {
@@ -146,10 +147,10 @@ export default {
             }
         },
         clickBlock(x, y) {
-            if (FirstClick) {
+            if (firstClick) {
+                firstClick = false
                 this.time = Date.now() //计时开始
-                this.updateTime()
-                FirstClick = false
+                this.countTime()
             }
 
             if (this.martix[x][y].revealed) this.clickNum(x, y)
@@ -157,10 +158,10 @@ export default {
             this.judge()
         },
         clickRightBlock(x, y) {
-            if (FirstClick) {
+            if (firstClick) {
+                firstClick = false
                 this.time = Date.now() //计时开始
-                this.updateTime()
-                FirstClick = false
+                this.countTime()
             }
 
             let block = this.martix[x][y]
@@ -217,19 +218,21 @@ export default {
         },
         win() {
             let endTime = Date.now()
+            if (timer) clearInterval(timer)
             setTimeout(()=>{
                 alert(`YOU WIN! ${((endTime-this.time)/1000).toFixed(2)}s`)
-                history.go(0)
+                this.replay()
             },100)
         },
         lose() {
+            if (timer) clearInterval(timer)
             setTimeout(()=>{
                 alert('YOU LOSE')
-                history.go(0)
+                this.replay()
             },100)
         },
         refresh() {
-            history.go(0)
+            this.replay()
         },
         onSubmit() {
             //格式化输入为在0~MAXLENGTH范围内的整数
@@ -249,30 +252,41 @@ export default {
                 storage.setItem("PMine",this.inputPMine)
             }
 
-            history.go(0)
+            this.replay()
         },
-        updateTime() {
-            requestAnimationFrame(()=>{
+        countTime() {
+            if (timer) clearInterval(timer)
+            timer = setInterval(()=>{
                 this.showTime = (Date.now() - this.time)/1000
-                this.updateTime()
-            })
+            },50)
+        },
+        replay() {
+            this.showTime = 0
+            revealedBlockNum = 0
+            flagedBlockNum = 0
+            mineNum = 0
+            firstClick = true
+            if (timer) clearInterval(timer)
+            timer = null
+
+            if (window.localStorage) {
+                let storage = window.localStorage
+                HEIGHT = Number(storage.getItem("Height") || HEIGHT)
+                WIDTH  = Number(storage.getItem("Width") || WIDTH)
+                P_MINE = Number(storage.getItem("PMine") || P_MINE)
+                console.log()
+                this.inputHeight = HEIGHT
+                this.inputWidth = WIDTH
+                this.inputPMine = P_MINE
+            }
+            this.martix = Array.from(new Array(HEIGHT), 
+                ()=>new Array(WIDTH).fill({}).map(()=>new Block()))
+            this.generateMine()
+            this.countNum()     
         }
     },
     created() {
-        if (window.localStorage) {
-            let storage = window.localStorage
-            HEIGHT = Number(storage.getItem("Height") || HEIGHT)
-            WIDTH  = Number(storage.getItem("Width") || WIDTH)
-            P_MINE = Number(storage.getItem("PMine") || P_MINE)
-            console.log()
-            this.inputHeight = HEIGHT
-            this.inputWidth = WIDTH
-            this.inputPMine = P_MINE
-        }
-        this.martix = Array.from(new Array(HEIGHT), 
-            ()=>new Array(WIDTH).fill({}).map(()=>new Block()))
-        this.generateMine()
-        this.countNum()
+        this.replay()
     },
     mounted() {
         
