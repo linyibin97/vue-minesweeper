@@ -2,7 +2,7 @@
 
 Vue实现 经典小游戏扫雷 
 
-[在线游玩](http://101.33.214.39:81/)
+[在线游玩](https://linyibin97.github.io/vue-minesweeper/)
 
 ![](https://raw.githubusercontent.com/linyibin97/vue-minesweeper/main/img/preview.png)
 
