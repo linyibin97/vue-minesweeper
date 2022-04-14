@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1381385",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
       "icon_id": "4936668",
       "name": "eye-fill",
       "font_class": "eye-fill",
@@ -32,13 +39,6 @@
       "font_class": "eyeclose-fill",
       "unicode": "e8ff",
       "unicode_decimal": 59647
-    },
-    {
-      "icon_id": "23185109",
-      "name": "gitee2",
-      "font_class": "gitee2",
-      "unicode": "e677",
-      "unicode_decimal": 58999
     }
   ]
 }

@@ -40,9 +40,9 @@
         </div>
     </div>
     <div class="Footer">
-        <a href="https://gitee.com/linyibin97/vue-minesweeper">
-            <div class="gitee">
-                <i class="iconfont">&#xe677;</i>
+        <a href="https://github.com/linyibin97/vue-minesweeper">
+            <div class="github">
+                <i class="iconfont">&#xe628;</i>
                 <span>REPOSITORY</span>
             </div>
         </a>
@@ -332,7 +332,7 @@ export default {
         margin-top: 50px;
         user-select:none;
     }
-    .gitee {
+    .github {
         display: flex;
         font-size: 16px;
         color: #888;
