@@ -1,17 +1,9 @@
 <template>
 <div>
     <div class="Header">
-        <div class="title">MineSweeper</div>
-        <div class="inputs">
-            Height:<input type="number" v-model.number="inputHeight">
-            Width:<input type="number" v-model.number="inputWidth">
-            Mine%:<input type="number" v-model.number="inputPMine">
-        </div>
-        <div class="buttons">
-            <button @click="onSubmit()">UPDATE</button>
-            <button @click="refresh()" class="replay">REPLAY</button>
-        </div>
-        <div class="timer">{{showTime.toFixed(1)}}s</div>
+        <div class="title">Mine Sweeper</div>
+        
+        <div class="timer">{{showTime.toFixed(1)}}</div>
     </div>
     <div class="minesweeper" @contextmenu.prevent="">
         <div 
@@ -40,6 +32,8 @@
         </div>
     </div>
     <div class="Footer">
+        <button @click="setting=true">SETTING</button>
+        <button @click="refresh()" class="replay">REPLAY</button>
         <a href="https://github.com/linyibin97/vue-minesweeper">
             <div class="github">
                 <i class="iconfont">&#xe628;</i>
@@ -50,6 +44,17 @@
             <i class="iconfont" v-if="devmode">&#xe869;</i>
             <i class="iconfont" v-else>&#xe8ff;</i>
             <span>HACK</span>
+        </div>
+    </div>
+    <div class="greycover" v-show="setting" @click="setting=false">
+        <div class="inputs">
+            <div>Height :<input type="number" v-model.number="inputHeight"></div>
+            <div>Width :<input type="number" v-model.number="inputWidth"></div>
+            <div>Mine% :<input type="number" v-model.number="inputPMine"></div>
+            <div class="buttons">
+                <div @click="()=>{onSubmit();setting=false}">UPDATE</div>
+                <div @click="setting=false">CLOSE</div>
+            </div>
         </div>
     </div>
 </div>
@@ -95,6 +100,7 @@ export default {
             inputHeight : 10,
             inputWidth : 10,
             inputPMine : 10,
+            setting: false, //打开设置菜单
             devmode: false, //开发模式 为TRUE可以预览格子内容 （透视挂）
         }
     },
@@ -295,34 +301,71 @@ export default {
 </script>
 
 <style scoped>
+    @font-face {
+        font-family: 'title';
+        src: url('../assets/ka1.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'text';
+        src: url('../assets/Fleftex-M-1.ttf') format('truetype');
+    }
     .Header {
-        color: #555
+        color: #555;
+        font-family: 'text';
     }
     .title {
+        color: #333;
         text-align: center;
-        font-size: 24px;
-        margin: 10px
-        
+        font-size: 30px;
+        margin: 20px;
+        font-family: 'title';
+    }
+    .greycover {
+        background-color: rgba(0,0,0,0.5);
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
     }
     .inputs {
+        width: 400px;
+        height: 300px;
+        background-color: #fff;
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
+        font-family: 'text';
+        color: #555;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        border: 2px solid #555;
+        position: absolute;
+        left: 50%;
+        top: 20%;
+        transform: translateX(-50%);
     }
     .inputs input{
+        font-size: 14px;
+        height: 18px;
         width: 40px;
         margin: 10px;
         color: #555
     }
     .buttons {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
+        margin: 20px 0 0
     }
-    .buttons button{
-        margin: 5px;
-        color: #555
+    .buttons div{
+        color: #555;
+        background-color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        user-select: none;
     }
     .timer {
-        font-size: 20px;
+        font-size: 24px;
         margin: 10px;
         text-align: center;
     }
