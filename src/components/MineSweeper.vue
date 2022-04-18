@@ -18,7 +18,7 @@
                 @contextmenu.prevent="clickRightBlock(x,y)"
                 :class="['block',!block.revealed? (block.highlight?'hightlight':'cover') : (block.mine?'mineblock':'')]">
                     <span v-if="block.flagged">
-                        <i class="iconfont flag">&#xe7ad;</i>
+                        <i class="iconfont flag">&#xe61f;</i>
                     </span>
                     <template v-else-if="block.revealed || devmode">
                         <span v-if="block.mine">
@@ -32,21 +32,27 @@
         </div>
     </div>
     <div class="Footer">
-        <button @click="setting=true">SETTING</button>
-        <button @click="refresh()" class="replay">REPLAY</button>
-        <a href="https://github.com/linyibin97/vue-minesweeper">
-            <div class="github">
-                <i class="iconfont">&#xe628;</i>
-                <span>REPOSITORY</span>
-            </div>
-        </a>
-        <div class="hack" @click="devmode = !devmode">
+        <div class="footeritem" @click="refresh()">
+            <i class="iconfont">&#xe788;</i>
+            <span class="footeritemtag">Replay</span>
+        </div>
+        <div class="footeritem" @click="setting=true">
+            <i class="iconfont">&#xe871;</i>
+            <span class="footeritemtag">Settings</span>
+        </div>
+        <div class="footeritem" @click="devmode = !devmode">
             <i class="iconfont" v-if="devmode">&#xe869;</i>
             <i class="iconfont" v-else>&#xe8ff;</i>
-            <span>HACK</span>
+            <span class="footeritemtag">Hack</span>
         </div>
+        <a href="https://github.com/linyibin97/vue-minesweeper">
+            <div class="footeritem">
+                <i class="iconfont">&#xe885;</i>
+                <span class="footeritemtag">Github</span>
+            </div>
+        </a>
     </div>
-    <div class="greycover" v-show="setting" @click="setting=false">
+    <div class="greycover" v-show="setting" @click.self="setting=false">
         <div class="inputs">
             <div>Height :<input type="number" v-model.number="inputHeight"></div>
             <div>Width :<input type="number" v-model.number="inputWidth"></div>
@@ -317,7 +323,7 @@ export default {
         color: #333;
         text-align: center;
         font-size: 30px;
-        margin: 20px;
+        margin-top: 30px;
         font-family: 'title';
     }
     .greycover {
@@ -366,34 +372,45 @@ export default {
     }
     .timer {
         font-size: 24px;
-        margin: 10px;
+        margin-top: 30px;
         text-align: center;
     }
     .Footer {
         display: flex;
         justify-content: center;
-        margin-top: 50px;
+        margin: 0 auto;
+        margin-top: 30px;
         user-select:none;
+        width: 250px;
+        height: 36px;
+        justify-content: space-around;
+        align-items: center;
     }
-    .github {
-        display: flex;
-        font-size: 16px;
-        color: #888;
-    }
-    .hack {
-        display: flex;
-        font-size: 16px;
-        color: #888;
-        margin-left: 30px;
+    .footeritem {
+        text-align: center;
         cursor: pointer;
-    }
-    .Footer i {
+        position: relative;
         font-size: 24px;
-        margin-right: 5px;
         color: #888;
+    }
+    .footeritemtag {
+        font-family: 'text';
+        color: #666;
+        font-size: 14px;
+        position: absolute;
+        top:150%;
+        left:50%;
+        transform: translateX(-50%);
+        visibility: hidden;
+    }
+    .footeritem:hover {
+        color: #666;
+    }
+    .footeritem:hover .footeritemtag {
+        visibility: visible;
     }
     .minesweeper {
-        margin: 10px;
+        margin-top: 30px;
     }
     .row {
         display: flex;
@@ -432,7 +449,7 @@ export default {
 
     @font-face {
         font-family: 'iconfont';
-        src: url('../assets/icon/iconfont.ttf?t=1647752117392') format('truetype');
+        src: url('../assets/icon/iconfont.ttf?t=1650267992531') format('truetype');
     }
     .iconfont {
         font-family: "iconfont" !important;

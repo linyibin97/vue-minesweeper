@@ -6,11 +6,11 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "1381385",
-      "name": "github",
-      "font_class": "github",
-      "unicode": "e628",
-      "unicode_decimal": 58920
+      "icon_id": "4765852",
+      "name": "reload",
+      "font_class": "reload",
+      "unicode": "e788",
+      "unicode_decimal": 59272
     },
     {
       "icon_id": "4936668",
@@ -20,6 +20,20 @@
       "unicode_decimal": 59497
     },
     {
+      "icon_id": "4936694",
+      "name": "setting-fill",
+      "font_class": "setting-fill",
+      "unicode": "e871",
+      "unicode_decimal": 59505
+    },
+    {
+      "icon_id": "4937000",
+      "name": "github-fill",
+      "font_class": "github-fill",
+      "unicode": "e885",
+      "unicode_decimal": 59525
+    },
+    {
       "icon_id": "5633855",
       "name": "bomb",
       "font_class": "bomb",
@@ -27,18 +41,18 @@
       "unicode_decimal": 61251
     },
     {
-      "icon_id": "6151099",
-      "name": "flag-fill",
-      "font_class": "flag-fill",
-      "unicode": "e7ad",
-      "unicode_decimal": 59309
-    },
-    {
       "icon_id": "8092166",
       "name": "eye close-fill",
       "font_class": "eyeclose-fill",
       "unicode": "e8ff",
       "unicode_decimal": 59647
+    },
+    {
+      "icon_id": "12002169",
+      "name": "flag-fill",
+      "font_class": "flag-fill",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
     }
   ]
 }
